@@ -52,5 +52,27 @@ func main() {
 		})
 	})
 
+	r.GET("/setcookie", func(c *gin.Context) {
+		c.SetCookie("setting", "firstcookie", 1000, "/", "localhost", false, true)
+		c.JSON(200, gin.H{
+			"message": "Cookie has been set!",
+		})
+	})
+
+	r.GET("/getcookie", func(c *gin.Context) {
+		val, err := c.Cookie("setting")
+		if err != nil {
+			c.JSON(404, gin.H{
+				"message": "error",
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"val": val,
+		})
+
+	})
+
 	r.Run(":8080")
 }
